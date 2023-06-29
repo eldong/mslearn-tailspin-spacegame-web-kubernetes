@@ -61,6 +61,8 @@ stages:
             artifact: manifests
   - job: 'Manifest'
     steps:
+    - download: current
+      artifact: manifests
     - task: KubernetesManifest@1
       displayName: Create imagePullSecret
       inputs:

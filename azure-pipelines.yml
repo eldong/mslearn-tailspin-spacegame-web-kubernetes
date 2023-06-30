@@ -39,6 +39,7 @@ stages:
           $(tag)
 
     - task: replacetokens@5
+      displayName: Set Container Image Tags
       inputs:
         rootDirectory: 'manifests'
         targetFiles: '**/*.yml'
@@ -61,7 +62,7 @@ stages:
   dependsOn: Build
   jobs:
   - deployment: Deploy
-    displayName: Deploy
+    displayName: Download Artifacts
     pool:
       vmImage: 'ubuntu-20.04'
     environment: 'Dev'

@@ -61,20 +61,20 @@ stages:
   displayName: 'Deploy the containers'
   dependsOn: Build
   jobs:
-  - deployment: Deploy
-    displayName: Download Artifacts
-    pool:
-      vmImage: 'ubuntu-20.04'
-    environment: 'Dev'
-    variables:
-    - group: Release
+#  - deployment: Deploy
+#    displayName: Download Artifacts
+#    pool:
+#      vmImage: 'ubuntu-20.04'
+#    environment: 'Dev'
+#    variables:
+#    - group: Release
 #    strategy:
 #      runOnce:
 #        deploy:
 #          steps:
 #          - download: current
 #            artifact: manifests
-  - job: 'Manifest'
+  - job: 'Deploy AKS yaml files'
     steps:
     - checkout: none
     - download: current

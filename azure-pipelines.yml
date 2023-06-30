@@ -74,7 +74,8 @@ stages:
 #          steps:
 #          - download: current
 #            artifact: manifests
-  - job: 'Deploy AKS yaml files'
+  - job: 'DeployYamlFiles'
+    displayName: Deploy YAML files to AKS
     steps:
     - checkout: none
     - download: current

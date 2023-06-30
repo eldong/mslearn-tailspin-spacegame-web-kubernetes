@@ -1,5 +1,5 @@
 trigger: none
-# - 'main'
+#- 'main'
 
 variables:
   buildConfiguration: 'Release'
@@ -14,6 +14,8 @@ stages:
   jobs:  
   - job: 'Build'
     displayName: 'Build job'
+    variables:
+    - group: 'Prod'
     pool:
       vmImage: 'ubuntu-20.04'
     steps:
@@ -39,7 +41,7 @@ stages:
           $(tag)
 
     - task: replacetokens@5
-      displayName: Set Container Image Tags
+      displayName: Set namespace and image tags
       inputs:
         rootDirectory: 'manifests'
         targetFiles: '**/*.yml'
@@ -65,9 +67,9 @@ stages:
     displayName: Deploy to Dev Environment
     pool:
       vmImage: 'ubuntu-20.04'
-    environment: 'Production'
+    environment: 'Prod'
     variables:
-    - group: Release
+    - group: 'Prod'
     strategy:
       runOnce:
         deploy:

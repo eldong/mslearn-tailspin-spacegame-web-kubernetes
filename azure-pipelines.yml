@@ -7,6 +7,7 @@ variables:
   webRepository: 'web'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'secret'
+  vargroup: Dev
 #  namespace: default
 
 stages:
@@ -16,7 +17,7 @@ stages:
   - job: 'Build'
     displayName: 'Build job'
     variables:
-    - group: Dev
+    - group: $(vargroup)
     pool:
       vmImage: 'ubuntu-20.04'
     steps:
@@ -42,7 +43,7 @@ stages:
           $(tag)
 
     - task: replacetokens@5
-      displayName: Set Container Image Tags
+      displayName: Set namespace and image tags
       inputs:
         rootDirectory: 'manifests'
         targetFiles: '**/*.yml'
@@ -70,7 +71,7 @@ stages:
       vmImage: 'ubuntu-20.04'
     environment: 'Dev'
     variables:
-    - group: Dev
+    - group: $(vargroup)
     strategy:
       runOnce:
         deploy:

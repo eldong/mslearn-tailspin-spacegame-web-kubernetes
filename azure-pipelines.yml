@@ -58,7 +58,7 @@ stages:
       artifact: manifests
 
 - stage: 'Deploy'
-  displayName: 'Deploy the containers'
+  displayName: 'Update AKS Cluster'
   dependsOn: Build
   jobs:
 #  - deployment: Deploy
@@ -80,6 +80,7 @@ stages:
     - checkout: none
     - download: current
       artifact: manifests
+      displayName: Download Artifacts
     - task: KubernetesManifest@1
       displayName: Create imagePullSecret
       inputs:

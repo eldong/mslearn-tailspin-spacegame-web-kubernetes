@@ -7,8 +7,6 @@ variables:
   webRepository: 'web'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'secret'
-  vargroup: 'Dev'
-#  namespace: default
 
 stages:
 - stage: 'Build'

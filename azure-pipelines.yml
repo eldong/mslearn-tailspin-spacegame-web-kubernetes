@@ -38,6 +38,20 @@ stages:
         tags: |
           $(tag)
 
+    - task: replacetokens@5
+      inputs:
+        rootDirectory: 'manifests'
+        targetFiles: '**/*.yml'
+        encoding: 'auto'
+        tokenPattern: 'default'
+        writeBOM: true
+        actionOnMissing: 'warn'
+        keepToken: false
+        actionOnNoFiles: 'warn'
+        enableTransforms: false
+        enableRecursion: false
+        useLegacyPattern: false
+        enableTelemetry: true
 
     - publish: '$(Build.SourcesDirectory)/manifests'
       artifact: manifests

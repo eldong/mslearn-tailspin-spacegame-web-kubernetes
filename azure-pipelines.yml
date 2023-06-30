@@ -61,51 +61,51 @@ stages:
   displayName: 'Update AKS Cluster'
   dependsOn: Build
   jobs:
-#  - deployment: Deploy
-#    displayName: Download Artifacts
-#    pool:
-#      vmImage: 'ubuntu-20.04'
-#    environment: 'Dev'
-#    variables:
-#    - group: Release
-#    strategy:
-#      runOnce:
-#        deploy:
-#          steps:
-#          - download: current
-#            artifact: manifests
-  - job: 'DeployYamlFiles'
-    displayName: Deploy YAML files to AKS
-    steps:
-    - checkout: none
-    - download: current
-      artifact: manifests
-      displayName: Download Artifacts
-    - task: KubernetesManifest@1
-      displayName: Create imagePullSecret
-      inputs:
-        action: createSecret
-        connectionType: azureResourceManager
-        secretName: $(imagePullSecret)
-        dockerRegistryEndpoint: 'Container Registry Connection'
-        azureSubscriptionConnection: 'Kubernetes Cluster Connection'
-        azureResourceGroup: 'tailspin-space-game-rg'
-        kubernetesCluster: 'tailspinspacegame-21448'
-        namespace: 'default'
-    - task: KubernetesManifest@1
-      displayName: Deploy to Kubernetes cluster
-      inputs:
-        action: deploy
-        connectionType: azureResourceManager
-        azureSubscriptionConnection: 'Kubernetes Cluster Connection'
-        azureResourceGroup: 'tailspin-space-game-rg'
-        kubernetesCluster: 'tailspinspacegame-21448'
-        namespace: 'default'
-        manifests: |
-          $(Pipeline.Workspace)/manifests/deployment.yml
-          $(Pipeline.Workspace)/manifests/service.yml
-        imagePullSecrets: |
-          $(imagePullSecret)
-        containers: |
-          $(RegistryName)/$(webRepository):$(tag)
-          $(RegistryName)/$(leaderboardRepository):$(tag)        
+  - deployment: Deploy
+    displayName: Download Artifacts
+    pool:
+      vmImage: 'ubuntu-20.04'
+    environment: 'Dev'
+    variables:
+    - group: Release
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: manifests
+#  - job: 'DeployYamlFiles'
+#    displayName: Deploy YAML files to AKS
+#    steps:
+#    - checkout: none
+#    - download: current
+#      artifact: manifests
+#      displayName: Download Artifacts
+          - task: KubernetesManifest@1
+            displayName: Create imagePullSecret
+            inputs:
+              action: createSecret
+              connectionType: azureResourceManager
+              secretName: $(imagePullSecret)
+              dockerRegistryEndpoint: 'Container Registry Connection'
+              azureSubscriptionConnection: 'Kubernetes Cluster Connection'
+              azureResourceGroup: 'tailspin-space-game-rg'
+              kubernetesCluster: 'tailspinspacegame-21448'
+              namespace: 'default'
+          - task: KubernetesManifest@1
+            displayName: Deploy to Kubernetes cluster
+            inputs:
+              action: deploy
+              connectionType: azureResourceManager
+              azureSubscriptionConnection: 'Kubernetes Cluster Connection'
+              azureResourceGroup: 'tailspin-space-game-rg'
+              kubernetesCluster: 'tailspinspacegame-21448'
+              namespace: 'default'
+              manifests: |
+                $(Pipeline.Workspace)/manifests/deployment.yml
+                $(Pipeline.Workspace)/manifests/service.yml
+              imagePullSecrets: |
+                $(imagePullSecret)
+              containers: |
+                $(RegistryName)/$(webRepository):$(tag)
+                $(RegistryName)/$(leaderboardRepository):$(tag)        

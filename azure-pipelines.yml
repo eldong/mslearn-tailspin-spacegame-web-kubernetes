@@ -17,7 +17,7 @@ stages:
   - job: 'Build'
     displayName: 'Build job'
     variables:
-    - group: $(vargroup)
+    - group: 'Dev'
     pool:
       vmImage: 'ubuntu-20.04'
     steps:
@@ -71,7 +71,7 @@ stages:
       vmImage: 'ubuntu-20.04'
     environment: 'Dev'
     variables:
-    - group: $(vargroup)
+    - group: 'Dev'
     strategy:
       runOnce:
         deploy:

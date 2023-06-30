@@ -93,7 +93,7 @@ stages:
               azureSubscriptionConnection: 'Kubernetes Cluster Connection'
               azureResourceGroup: 'tailspin-space-game-rg'
               kubernetesCluster: 'tailspinspacegame-21448'
-              namespace: 'default'
+              namespace: $(namespace)
           - task: KubernetesManifest@1
             displayName: Deploy to Kubernetes cluster
             inputs:
@@ -102,7 +102,7 @@ stages:
               azureSubscriptionConnection: 'Kubernetes Cluster Connection'
               azureResourceGroup: 'tailspin-space-game-rg'
               kubernetesCluster: 'tailspinspacegame-21448'
-              namespace: 'default'
+              namespace: $(namespace)
               manifests: |
                 $(Pipeline.Workspace)/manifests/deployment.yml
                 $(Pipeline.Workspace)/manifests/service.yml

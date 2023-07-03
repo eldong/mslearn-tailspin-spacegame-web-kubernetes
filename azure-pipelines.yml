@@ -14,8 +14,8 @@ stages:
   jobs:  
   - job: 'Build'
     displayName: 'Build job'
-    variables:
-    - group: 'Dev'
+#    variables:
+#    - group: 'Dev'
     pool:
       vmImage: 'ubuntu-20.04'
     steps:
@@ -40,23 +40,24 @@ stages:
         tags: |
           $(tag)
 
-    - task: replacetokens@5
-      displayName: Set namespace and image tags
-      inputs:
-        rootDirectory: 'manifests'
-        targetFiles: '**/*.yml'
-        encoding: 'auto'
-        tokenPattern: 'default'
-        writeBOM: true
-        actionOnMissing: 'warn'
-        keepToken: false
-        actionOnNoFiles: 'warn'
-        enableTransforms: false
-        enableRecursion: false
-        useLegacyPattern: false
-        enableTelemetry: true
+#    - task: replacetokens@5
+#      displayName: Set namespace and image tags
+#      inputs:
+#        rootDirectory: 'manifests'
+#        targetFiles: '**/*.yml'
+#       encoding: 'auto'
+#        tokenPattern: 'default'
+#        writeBOM: true
+#        actionOnMissing: 'warn'
+#        keepToken: false
+#        actionOnNoFiles: 'warn'
+#        enableTransforms: false
+#        enableRecursion: false
+#        useLegacyPattern: false
+#        enableTelemetry: true
 
     - publish: '$(Build.SourcesDirectory)/manifests'
+      displayName: Store AKS yaml as artifacts
       artifact: manifests
 
 - stage: 'Deploy'
@@ -83,6 +84,22 @@ stages:
 #    - download: current
 #      artifact: manifests
 #      displayName: Download Artifacts
+          - task: replacetokens@5
+            displayName: Set namespace and image tags
+            inputs:
+              rootDirectory: 'manifests'
+              targetFiles: '**/*.yml'
+              encoding: 'auto'
+              tokenPattern: 'default'
+              writeBOM: true
+              actionOnMissing: 'warn'
+              keepToken: false
+              actionOnNoFiles: 'warn'
+              enableTransforms: false
+              enableRecursion: false
+              useLegacyPattern: false
+              enableTelemetry: true
+
           - task: KubernetesManifest@1
             displayName: Create imagePullSecret
             inputs:

@@ -87,7 +87,7 @@ stages:
           - task: replacetokens@5
             displayName: Set namespace and image tags
             inputs:
-              rootDirectory: 'manifests'
+              rootDirectory: $(Pipeline.Workspace)/manifests
               targetFiles: '**/*.yml'
               encoding: 'auto'
               tokenPattern: 'default'

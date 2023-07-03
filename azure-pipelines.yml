@@ -7,7 +7,7 @@ variables:
   webRepository: 'web'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'secret'
-  envname: 'Dev'
+  envname: 'Prod'
 
 stages:
 - stage: 'Build'
@@ -16,7 +16,7 @@ stages:
   - job: 'Build'
     displayName: 'Build job'
 #    variables:
-#    - group: 'Dev'
+#    - group: $(envname)
     pool:
       vmImage: 'ubuntu-20.04'
     steps:

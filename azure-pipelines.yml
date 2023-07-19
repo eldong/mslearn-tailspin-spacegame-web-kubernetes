@@ -7,7 +7,7 @@ variables:
   webRepository: 'web'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'secret'
-  envname: 'Prod'
+  envname: 'Dev'
 
 stages:
 - stage: 'Build'
@@ -15,8 +15,6 @@ stages:
   jobs:  
   - job: 'Build'
     displayName: 'Build job'
-#    variables:
-#    - group: 'Dev'
     pool:
       vmImage: 'ubuntu-20.04'
     steps:
@@ -53,9 +51,9 @@ stages:
     displayName: Deploy to Dev Environment
     pool:
       vmImage: 'ubuntu-20.04'
-    environment: 'Prod'
+    environment: 'Dev'
     variables:
-    - group: 'Prod'
+    - group: 'Dev'
     strategy:
       runOnce:
         deploy:

@@ -41,22 +41,6 @@ stages:
         tags: |
           $(tag)
 
-#    - task: replacetokens@5
-#      displayName: Set namespace and image tags
-#      inputs:
-#        rootDirectory: 'manifests'
-#        targetFiles: '**/*.yml'
-#       encoding: 'auto'
-#        tokenPattern: 'default'
-#        writeBOM: true
-#        actionOnMissing: 'warn'
-#        keepToken: false
-#        actionOnNoFiles: 'warn'
-#        enableTransforms: false
-#        enableRecursion: false
-#        useLegacyPattern: false
-#        enableTelemetry: true
-
     - publish: '$(Build.SourcesDirectory)/manifests'
       displayName: Store AKS yaml as artifacts
       artifact: manifests
@@ -78,13 +62,7 @@ stages:
           steps:
           - download: current
             artifact: manifests
-#  - job: 'DeployYamlFiles'
-#    displayName: Deploy YAML files to AKS
-#    steps:
-#    - checkout: none
-#    - download: current
-#      artifact: manifests
-#      displayName: Download Artifacts
+
           - task: replacetokens@5
             displayName: Set namespace and image tags
             inputs:

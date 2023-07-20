@@ -3,12 +3,11 @@ trigger:
 - 'main'
 
 variables:
-  buildConfiguration: 'Release'
+#  buildConfiguration: 'Release'
   leaderboardRepository: 'leaderboard'
   webRepository: 'web'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'secret'
-  envname: 'Dev'
 
 stages:
 - stage: 'Build'

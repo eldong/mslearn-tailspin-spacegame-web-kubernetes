@@ -44,7 +44,7 @@ stages:
       displayName: Store AKS yaml as artifacts
       artifact: manifests
 
-- stage: 'Deploy'
+- stage: 'Deploy to Dev'
   displayName: 'Update AKS Cluster'
   dependsOn: Build
   jobs:
@@ -107,8 +107,12 @@ stages:
                 $(RegistryName)/$(webRepository):$(tag)
                 $(RegistryName)/$(leaderboardRepository):$(tag)
 
+- stage: 'Deploy to Prod'
+  displayName: 'Update AKS Cluster'
+  dependsOn: Build
+  jobs:
   - deployment: Deploy
-    displayName: Deploy to Prod Environment
+    displayName: Deploy to Dev Environment
     pool:
       vmImage: 'ubuntu-20.04'
     environment: 'Prod'
@@ -164,4 +168,4 @@ stages:
                 $(imagePullSecret)
               containers: |
                 $(RegistryName)/$(webRepository):$(tag)
-                $(RegistryName)/$(leaderboardRepository):$(tag)                        
+                $(RegistryName)/$(leaderboardRepository):$(tag)

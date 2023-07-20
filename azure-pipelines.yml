@@ -41,7 +41,13 @@ stages:
         containerRegistry: 'Container Registry Connection'
         tags: |
           $(tag)
-
+    - task: CmdLine@2
+      inputs:
+          script: 'docker rmi -f  $(RegistryName)/$(webRepository):$(tag)'
+    - task: CmdLine@2
+      inputs:
+          script: 'docker rmi -f  $(RegistryName)/$(leaderboardRepository):$(tag)'
+        
     - publish: '$(Build.SourcesDirectory)/manifests'
       displayName: Store AKS yaml as artifacts
       artifact: manifests

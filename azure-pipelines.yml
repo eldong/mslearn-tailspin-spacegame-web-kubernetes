@@ -15,9 +15,9 @@ stages:
   jobs:  
   - job: 'Build'
     displayName: 'Build job'
-    #pool:
-    #  vmImage: 'ubuntu-20.04'
-    pool: LinuxPool
+    pool:
+      vmImage: 'ubuntu-20.04'
+    #pool: LinuxPool
     variables:
     - group: 'Dev'
     workspace:

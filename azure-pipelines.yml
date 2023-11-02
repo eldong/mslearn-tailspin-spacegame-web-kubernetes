@@ -92,6 +92,8 @@ stages:
               action: 'createSecret'
               connectionType: 'azureResourceManager'
               azureSubscriptionConnection: 'AKSWorkshopCluster'
+              azureResourceGroup: 'aks-workshop-demo'
+              kubernetesCluster: 'aks-workshop-demo'
               namespace: '$(namespace)'
               secretType: 'dockerRegistry'
               secretName: '$(imagePullSecret)'
@@ -102,6 +104,8 @@ stages:
               action: 'deploy'
               connectionType: 'azureResourceManager'
               azureSubscriptionConnection: 'AKSWorkshopCluster'
+              azureResourceGroup: 'aks-workshop-demo'
+              kubernetesCluster: 'aks-workshop-demo'
               namespace: '$(namespace)'
               manifests: |
                 $(Pipeline.Workspace)/manifests/deployment.yml

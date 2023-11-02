@@ -90,8 +90,8 @@ stages:
             displayName: Create imagePullSecret
             inputs:
               action: 'createSecret'
-              connectionType: 'kubernetesServiceConnection'
-              kubernetesServiceConnection: 'AKSWorkshopCluster'
+              connectionType: 'azureResourceManager'
+              azureSubscriptionConnection: 'AKSWorkshopCluster'
               namespace: '$(namespace)'
               secretType: 'dockerRegistry'
               secretName: '$(imagePullSecret)'
@@ -100,8 +100,8 @@ stages:
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: 'deploy'
-              connectionType: 'kubernetesServiceConnection'
-              kubernetesServiceConnection: 'AKSWorkshopCluster'
+              connectionType: 'azureResourceManager'
+              azureSubscriptionConnection: 'AKSWorkshopCluster'
               namespace: '$(namespace)'
               manifests: |
                 $(Pipeline.Workspace)/manifests/deployment.yml
@@ -149,8 +149,8 @@ stages:
             displayName: Create imagePullSecret
             inputs:
               action: 'createSecret'
-              connectionType: 'kubernetesServiceConnection'
-              kubernetesServiceConnection: 'AKSWorkshopCluster'
+              connectionType: 'azureResourceManager'
+              azureSubscriptionConnection: 'AKSWorkshopCluster'
               namespace: '$(namespace)'
               secretType: 'dockerRegistry'
               secretName: '$(imagePullSecret)'
@@ -159,8 +159,8 @@ stages:
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: 'deploy'
-              connectionType: 'kubernetesServiceConnection'
-              kubernetesServiceConnection: 'AKSWorkshopCluster'
+              connectionType: 'azureResourceManager'
+              azureSubscriptionConnection: 'AKSWorkshopCluster'
               namespace: '$(namespace)'
               manifests: |
                 $(Pipeline.Workspace)/manifests/deployment.yml

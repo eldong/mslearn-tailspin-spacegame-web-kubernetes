@@ -26,23 +26,21 @@ stages:
     - task: Docker@2
       displayName: 'Build and push the web image to container registry'
       inputs:
-        command: buildAndPush
-        buildContext: $(Build.Repository.LocalPath)
-        repository: $(webRepository)
-        dockerfile: '$(Build.SourcesDirectory)/Tailspin.SpaceGame.Web/Dockerfile'
-        containerRegistry: 'Container Registry Connection'
-        tags: |
-          $(tag)
+        containerRegistry: 'AKSWorkshopACRConnection'
+        repository: '$(webRepository)'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        buildContext: '$(Build.Repository.LocalPath)'
+        tags: '$(tag)'
     - task: Docker@2
       displayName: 'Build and push the leaderboard image to container registry'
       inputs:
-        command: buildAndPush
-        buildContext: $(Build.Repository.LocalPath)
-        repository: $(leaderboardRepository)
-        dockerfile: '$(Build.SourcesDirectory)/Tailspin.SpaceGame.LeaderboardContainer/Dockerfile'
-        containerRegistry: 'Container Registry Connection'
-        tags: |
-          $(tag)
+        containerRegistry: 'AKSWorkshopACRConnection'
+        repository: '$(leaderboardRepository)'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        buildContext: '$(Build.Repository.LocalPath)'
+        tags: '$(tag)'
     - task: CmdLine@2
       inputs:
           script: 'docker rmi -f  $(RegistryName)/$(webRepository):$(tag)'
@@ -91,31 +89,27 @@ stages:
           - task: KubernetesManifest@1
             displayName: Create imagePullSecret
             inputs:
-              action: createSecret
-              connectionType: azureResourceManager
-              secretName: $(imagePullSecret)
+              action: 'createSecret'
+              connectionType: 'kubernetesServiceConnection'
+              kubernetesServiceConnection: 'AKSWorkshopCluster'
+              namespace: '$(namespace)'
+              secretType: 'dockerRegistry'
+              secretName: '$(imagePullSecret)'
               dockerRegistryEndpoint: 'Container Registry Connection'
-              azureSubscriptionConnection: 'Kubernetes Cluster Connection'
-              azureResourceGroup: 'tailspin-space-game-rg'
-              kubernetesCluster: 'tailspinspacegame-21448'
-              namespace: $(namespace)
           - task: KubernetesManifest@1
             displayName: Deploy to Kubernetes cluster
             inputs:
-              action: deploy
-              connectionType: azureResourceManager
-              azureSubscriptionConnection: 'Kubernetes Cluster Connection'
-              azureResourceGroup: 'tailspin-space-game-rg'
-              kubernetesCluster: 'tailspinspacegame-21448'
-              namespace: $(namespace)
+              action: 'deploy'
+              connectionType: 'kubernetesServiceConnection'
+              kubernetesServiceConnection: 'AKSWorkshopCluster'
+              namespace: '$(namespace)'
               manifests: |
                 $(Pipeline.Workspace)/manifests/deployment.yml
                 $(Pipeline.Workspace)/manifests/service.yml
-              imagePullSecrets: |
-                $(imagePullSecret)
               containers: |
                 $(RegistryName)/$(webRepository):$(tag)
                 $(RegistryName)/$(leaderboardRepository):$(tag)
+              imagePullSecrets: '$(imagePullSecret)'
 
 - stage: 'Deploy_to_Prod'
   displayName: 'Update AKS Cluster Prod Namespace'
@@ -154,28 +148,24 @@ stages:
           - task: KubernetesManifest@1
             displayName: Create imagePullSecret
             inputs:
-              action: createSecret
-              connectionType: azureResourceManager
-              secretName: $(imagePullSecret)
+              action: 'createSecret'
+              connectionType: 'kubernetesServiceConnection'
+              kubernetesServiceConnection: 'AKSWorkshopCluster'
+              namespace: '$(namespace)'
+              secretType: 'dockerRegistry'
+              secretName: '$(imagePullSecret)'
               dockerRegistryEndpoint: 'Container Registry Connection'
-              azureSubscriptionConnection: 'Kubernetes Cluster Connection'
-              azureResourceGroup: 'tailspin-space-game-rg'
-              kubernetesCluster: 'tailspinspacegame-21448'
-              namespace: $(namespace)
           - task: KubernetesManifest@1
             displayName: Deploy to Kubernetes cluster
             inputs:
-              action: deploy
-              connectionType: azureResourceManager
-              azureSubscriptionConnection: 'Kubernetes Cluster Connection'
-              azureResourceGroup: 'tailspin-space-game-rg'
-              kubernetesCluster: 'tailspinspacegame-21448'
-              namespace: $(namespace)
+              action: 'deploy'
+              connectionType: 'kubernetesServiceConnection'
+              kubernetesServiceConnection: 'AKSWorkshopCluster'
+              namespace: '$(namespace)'
               manifests: |
                 $(Pipeline.Workspace)/manifests/deployment.yml
                 $(Pipeline.Workspace)/manifests/service.yml
-              imagePullSecrets: |
-                $(imagePullSecret)
               containers: |
                 $(RegistryName)/$(webRepository):$(tag)
                 $(RegistryName)/$(leaderboardRepository):$(tag)
+              imagePullSecrets: '$(imagePullSecret)'
